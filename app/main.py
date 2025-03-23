@@ -1,51 +1,51 @@
-from flask import Flask, request, jsonify
-import logging
-from prometheus_flask_exporter import PrometheusMetrics
-
-app = Flask(__name__) 
-COMMENTS_FILE = "comments.txt"
-logging.basicConfig(level=logging.DEBUG)
-metrics = PrometheusMetrics(app)
-
-def save_comment(comment):
-	with open(COMMENTS_FILE, "a") as file:
-		file.write(f"{comment.get('email')}|{comment.get('comment')}|{comment.get('content_id')}\n")
-
-def load_comments(content_id):
-	comments = []
-
-	with open(COMMENTS_FILE, "r") as file:
-		for line in file:
-			email, comment_text, cid = line.strip().split("|")
-			if int(cid) == content_id:
-				comments.append({"email": email, "comment": comment_text, "content_id": cid})
-
-	if len(comments) > 0:
-		return comments, 200
-	return comments, 404
-
-@app.route("/api/comment/new", methods=["POST"])
-def new(): 
-	logging.debug(request)
-	data = request.get_json()
-	logging.debug(data)
-
-	if not data.get("email") or not data.get("comment") or not data.get("content_id"):
-		return jsonify(data), 400
-	
-	save_comment(data)
-
-	return jsonify(data), 201
-	
-@app.route("/api/comment/list/<int:content_id>", methods=["GET"]) 
-def list(content_id): 
-	comments, status = load_comments(content_id)
-	return jsonify(comments), status
-
-@app.route("/test", methods=["GET"])
-def test():
-    return "OK", 200
+from flask import Flask
+from flask import jsonify
+from flask import request
 
 
-if __name__ == "__main__": 
-	app.run(host='localhost', port=5000, debug=True) 
+app_name = 'comentarios'
+app = Flask(app_name)
+app.debug = True
+
+comments = {}
+
+
+@app.route('/api/comment/new', methods=['POST'])
+def api_comment_new():
+    request_data = request.get_json()
+
+    email = request_data['email']
+    comment = request_data['comment']
+    content_id = '{}'.format(request_data['content_id'])
+
+    new_comment = {
+            'email': email,
+            'comment': comment,
+            }
+
+    if content_id in comments:
+        comments[content_id].append(new_comment)
+    else:
+        comments[content_id] = [new_comment]
+
+    message = 'comment created and associated with content_id {}'.format(content_id)
+    response = {
+            'status': 'SUCCESS',
+            'message': message,
+            }
+    return jsonify(response)
+
+
+@app.route('/api/comment/list/<content_id>')
+def api_comment_list(content_id):
+    content_id = '{}'.format(content_id)
+
+    if content_id in comments:
+        return jsonify(comments[content_id])
+    else:
+        message = 'content_id {} not found'.format(content_id)
+        response = {
+                'status': 'NOT-FOUND',
+                'message': message,
+                }
+        return jsonify(response), 404
