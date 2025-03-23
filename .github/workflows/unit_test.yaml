@@ -1,0 +1,33 @@
+name: Test API
+on:
+  push:
+    branches:
+      - cicd
+      - main
+  pull_request:
+    branches:
+      - cicd
+      - main
+  workflow_dispatch:
+
+jobs:
+
+  unit-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9"]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+      - name: Install dependencies
+        run: |
+          cd app
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run unit test
+        run: |
+          cd app
+          python test_main.py
