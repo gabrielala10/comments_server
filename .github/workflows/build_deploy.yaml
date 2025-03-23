@@ -18,8 +18,8 @@ jobs:
       run: docker build . -t DOCKER_USER/comments_api:${{ github.sha }}
     - name: Push image
       run: |
-        docker login -u $DOCKER_USER -p$DOCKER_PASSWORD
-        docker push $DOCKER_USER/comments_api:${{ github.sha }}
+        docker login -u ${{ DOCKER_USER }} -p${{ DOCKER_PASSWORD }}
+        docker push ${{ DOCKER_USER }}/comments_api:${{ github.sha }}
 
   deploy:
     runs-on: ubuntu-latest
