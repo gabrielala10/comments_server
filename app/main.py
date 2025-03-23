@@ -1,11 +1,14 @@
-from flask import Flask
-from flask import jsonify
-from flask import request
+from flask import Flask, request, jsonify
+from prometheus_flask_exporter import PrometheusMetrics
+import logging
 
+
+logging.basicConfig(level=logging.DEBUG)
 
 app_name = 'comentarios'
 app = Flask(app_name)
 app.debug = True
+metrics = PrometheusMetrics(app)
 
 comments = {}
 
@@ -33,6 +36,7 @@ def api_comment_new():
             'status': 'SUCCESS',
             'message': message,
             }
+    app.logger.debug(f"Esse é o comments: {comments}")
     return jsonify(response)
 
 
@@ -40,6 +44,7 @@ def api_comment_new():
 def api_comment_list(content_id):
     content_id = '{}'.format(content_id)
 
+    app.logger.debug(f"Esse é o comments: {comments}")
     if content_id in comments:
         return jsonify(comments[content_id])
     else:
@@ -49,3 +54,6 @@ def api_comment_list(content_id):
                 'message': message,
                 }
         return jsonify(response), 404
+
+if __name__ == "__main__": 
+	app.run(host='localhost', port=8000, debug=True) 
