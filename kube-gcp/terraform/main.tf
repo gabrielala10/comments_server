@@ -33,12 +33,12 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
 }
 
 provider "kubernetes" {
-  
+
 }
 
 resource "kubernetes_namespace" "dev" {
   metadata {
-    name    = "dev"
+    name = "dev"
   }
 }
 
