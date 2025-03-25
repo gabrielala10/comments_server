@@ -29,6 +29,7 @@ jobs:
       run: terraform init
       working-directory: ./kube-gcp/terraform
       env:
+        KUBECONFIG: ${{ secrets.KUBECONFIG }}
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
 
     - name: Terraform Format
