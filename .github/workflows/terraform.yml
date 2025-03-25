@@ -25,11 +25,16 @@ jobs:
       with:
         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
+    - name: Create kubeconfig file
+      run: |
+        echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+      env:
+        KUBECONFIG: ${{ secrets.KUBECONFIG }}
+
     - name: Terraform Init
       run: terraform init
       working-directory: ./kube-gcp/terraform
       env:
-        KUBECONFIG: ${{ secrets.KUBECONFIG }}
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
 
     - name: Terraform Format
@@ -42,12 +47,10 @@ jobs:
       run: terraform plan -input=false
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
-        KUBECONFIG: ${{ secrets.KUBECONFIG }}
       working-directory: ./kube-gcp/terraform
 
     - name: Terraform Apply
       run: terraform apply -auto-approve -input=false
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
-        KUBECONFIG: ${{ secrets.KUBECONFIG }}
       working-directory: ./kube-gcp/terraform
