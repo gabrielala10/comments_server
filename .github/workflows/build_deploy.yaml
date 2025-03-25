@@ -24,14 +24,25 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
+    env:
+      KUBECONFIG: ${{ secrets.KUBECONFIG_DEV }}
     steps:
     - uses: actions/checkout@v4
+
     - name: Update deploy version
       run: sed -i "s/:latest/:${{ github.sha }}/" kube-gcp/kube/deployment.yaml
+
+    - name: Setup Kubernetes config
+      run: |
+        mkdir -p ~/.kube
+        echo "$KUBECONFIG" > ~/.kube/config
+        chmod 600 ~/.kube/config
+
     - name: Install the gcloud CLI
       uses: google-github-actions/setup-gcloud@v2
       with:
         project_id: comments-440520
         install_components: 'gke-gcloud-auth-plugin'
+
     - name: Deploy to GKE
-      run: kubectl --kubeconfig kube-gcp/terraform/kubeconfig.yaml apply -k kube-gcp/kube
+      run: kubectl --kubeconfig ~/.kube/config apply -k kube-gcp/kube
