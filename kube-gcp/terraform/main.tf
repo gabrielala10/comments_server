@@ -33,7 +33,7 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
 }
 
 provider "kubernetes" {
-  config_path = env("KUBECONFIG")
+
 }
 
 resource "kubernetes_namespace" "dev" {
