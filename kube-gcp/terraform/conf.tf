@@ -10,9 +10,3 @@ terraform {
     prefix  = "terraform/state"
   }
 }
-
-provider "google" {
-  project = "comments-440520"
-  region = "us-central1-a"
-  credentials = file("serviceaccount-key.json")
-}

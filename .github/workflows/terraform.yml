@@ -32,13 +32,16 @@ jobs:
       run: terraform fmt -check
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
+      working-directory: ./kube-gcp/terraform
 
     - name: Terraform Plan
       run: terraform plan -input=false
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
-        
+      working-directory: ./kube-gcp/terraform
+
     - name: Terraform Apply
       run: terraform apply -auto-approve -input=false
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
+      working-directory: ./kube-gcp/terraform
