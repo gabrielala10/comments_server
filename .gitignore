@@ -1,5 +1,5 @@
 __pycache__
 data
-providers*
+.terraform*
 serviceaccount-key.json
 .env
