@@ -27,32 +27,32 @@ Para testar a api utilize os seguintes comandos após utilizar docker compose up
 
 ```
 # matéria 1
-curl -sv localhost:5000/api/comment/new -X POST -H 'Content-Type: application/json' -d '{"email":"alice@example.com","comment":"first post!","content_id":1}'
+curl -sv localhost:8000/api/comment/new -X POST -H 'Content-Type: application/json' -d '{"email":"alice@example.com","comment":"first post!","content_id":1}'
 
 # matéria 2
-curl -sv localhost:5000/api/comment/new -X POST -H 'Content-Type: application/json' -d '{"email":"bob@example.com","comment":"I guess this is a good thing","content_id":2}'
+curl -sv localhost:8000/api/comment/new -X POST -H 'Content-Type: application/json' -d '{"email":"bob@example.com","comment":"I guess this is a good thing","content_id":2}'
 
 # listagem matéria 1
-curl -sv localhost:5000/api/comment/list/1
+curl -sv localhost:8000/api/comment/list/1
 
 # listagem matéria 2
-curl -sv localhost:5000/api/comment/list/2
+curl -sv localhost:8000/api/comment/list/2
 ```
 
 Se estiver usando Windows utilize:
 
 ```
 # matéria 1
-curl -sv localhost:5000/api/comment/new -X POST -H "Content-Type: application/json" -d "{\"email\":\"alice@example.com\",\"comment\":\"first post!\",\"content_id\":1}"
+curl -sv localhost:8000/api/comment/new -X POST -H "Content-Type: application/json" -d "{\"email\":\"alice@example.com\",\"comment\":\"first post!\",\"content_id\":1}"
 
 # matéria 2
-curl -sv localhost:5000/api/comment/new -X POST -H "Content-Type: application/json" -d "{\"email\":\"bob@example.com\",\"comment\":\"I guess this is a good thing\",\"content_id\":2}"
+curl -sv localhost:8000/api/comment/new -X POST -H "Content-Type: application/json" -d "{\"email\":\"bob@example.com\",\"comment\":\"I guess this is a good thing\",\"content_id\":2}"
 
 # listagem matéria 1
-curl -sv localhost:5000/api/comment/list/1
+curl -sv localhost:8000/api/comment/list/1
 
 # listagem matéria 2
-curl -sv localhost:5000/api/comment/list/2
+curl -sv localhost:8000/api/comment/list/2
 ```
 Se estiver conectado no GKE, voce precisa fazer o login no google cloud shell e depois disso utilizar o seguinte comando para se conectar no cluster:
 
@@ -101,7 +101,7 @@ Não consegui colocar o dashboard que criei no repo, pois fiz testes apagando o 
 ![Captura de tela 2024-11-07 221554](https://github.com/user-attachments/assets/96cf5930-0933-4a9c-8ffa-b12bce4d1a3b)
 
 Métrica utilizada:
-up{instance="api:5000"}
+up{instance="api:8000"}
 
 ## Rodar localmente
 Para rodar localmente basta utilizar docker compose up, dessa forma conseguirá fazer requests do seu ambiente local para o container de API com as instruções descritas no tópico *API*
