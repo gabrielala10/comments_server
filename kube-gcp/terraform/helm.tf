@@ -24,6 +24,7 @@ resource "helm_release" "grafana" {
   repository = "https://grafana.github.io/helm-charts"
   chart      = "grafana"
   namespace  = "monitoring"
+  version    = "6.56.4"
 
   set {
     name  = "service.type"
@@ -31,7 +32,22 @@ resource "helm_release" "grafana" {
   }
 
   set {
-    name  = "admin"
+    name  = "adminUser"
     value = "admin"
+  }
+
+  set {
+    name  = "adminPassword"
+    value = "admin"
+  }
+
+  set {
+    name  = "persistence.enabled"
+    value = "true"
+  }
+
+  set {
+    name  = "persistence.size"
+    value = "10Gi"
   }
 }
